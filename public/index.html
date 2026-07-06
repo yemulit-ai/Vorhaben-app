@@ -50,7 +50,6 @@
 <script>
 const { useState, useEffect, useCallback, useRef } = React;
 
-import { jsxDEV as _jsxDEV, Fragment as _Fragment } from "react/jsx-dev-runtime";
 // ---------- Helpers ----------
 const pad = n => String(n).padStart(2, "0");
 const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -187,6 +186,11 @@ function focusRate(data, themeId, cursor, lookbackDays = 7) {
     count,
     total
   };
+}
+function partitionDoneLast(arr) {
+  const notDone = arr.filter(x => !x.done);
+  const done = arr.filter(x => x.done);
+  return [...notDone, ...done];
 }
 
 // ---------- Cross-level gathering ----------
@@ -426,43 +430,39 @@ function InfoHint({
   text
 }) {
   const [open, setOpen] = useState(false);
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.infoHintWrap,
-    children: [/*#__PURE__*/_jsxDEV("button", {
-      style: S.infoHintBtn,
-      onClick: () => setOpen(o => !o),
-      "aria-label": "Hinweis anzeigen",
-      children: /*#__PURE__*/_jsxDEV("svg", {
-        width: "13",
-        height: "13",
-        viewBox: "0 0 24 24",
-        fill: "none",
-        children: [/*#__PURE__*/_jsxDEV("circle", {
-          cx: "12",
-          cy: "12",
-          r: "10",
-          stroke: "currentColor",
-          strokeWidth: "1.8"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("circle", {
-          cx: "12",
-          cy: "7.5",
-          r: "1.15",
-          fill: "currentColor"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-          x1: "12",
-          y1: "11",
-          x2: "12",
-          y2: "17",
-          stroke: "currentColor",
-          strokeWidth: "1.8",
-          strokeLinecap: "round"
-        }, void 0, false)]
-      }, void 0, true)
-    }, void 0, false), open && /*#__PURE__*/_jsxDEV("div", {
-      style: S.infoHintText,
-      children: text
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.infoHintWrap
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.infoHintBtn,
+    onClick: () => setOpen(o => !o),
+    "aria-label": "Hinweis anzeigen"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "13",
+    height: "13",
+    viewBox: "0 0 24 24",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "10",
+    stroke: "currentColor",
+    strokeWidth: "1.8"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "7.5",
+    r: "1.15",
+    fill: "currentColor"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "12",
+    y1: "11",
+    x2: "12",
+    y2: "17",
+    stroke: "currentColor",
+    strokeWidth: "1.8",
+    strokeLinecap: "round"
+  }))), open && /*#__PURE__*/React.createElement("div", {
+    style: S.infoHintText
+  }, text));
 }
 
 // ---------- Main App ----------
@@ -474,53 +474,48 @@ function App() {
     permission,
     requestPermission
   } = useReminders(data);
-  if (!loaded) return /*#__PURE__*/_jsxDEV("div", {
-    style: S.loading,
-    children: "lädt …"
-  }, void 0, false);
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.app,
-    children: [/*#__PURE__*/_jsxDEV("style", {
-      children: globalCss
-    }, void 0, false), tab !== "day" && /*#__PURE__*/_jsxDEV(TopBar, {
-      tab: tab,
-      cursor: cursor,
-      setCursor: setCursor,
-      permission: permission,
-      requestPermission: requestPermission
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      style: S.body,
-      children: [tab === "day" && /*#__PURE__*/_jsxDEV(DayView, {
-        data: data,
-        save: save,
-        cursor: cursor,
-        setCursor: setCursor,
-        permission: permission,
-        requestPermission: requestPermission
-      }, void 0, false), tab === "week" && /*#__PURE__*/_jsxDEV(WeekView, {
-        data: data,
-        save: save,
-        cursor: cursor,
-        setCursor: setCursor,
-        setTab: setTab
-      }, void 0, false), tab === "month" && /*#__PURE__*/_jsxDEV(MonthView, {
-        data: data,
-        save: save,
-        cursor: cursor,
-        setCursor: setCursor,
-        setTab: setTab
-      }, void 0, false), tab === "goals" && /*#__PURE__*/_jsxDEV(ZieleView, {
-        data: data,
-        save: save,
-        cursor: cursor,
-        setCursor: setCursor,
-        setTab: setTab
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV(TabBar, {
-      tab: tab,
-      setTab: setTab
-    }, void 0, false)]
-  }, void 0, true);
+  if (!loaded) return /*#__PURE__*/React.createElement("div", {
+    style: S.loading
+  }, "lädt …");
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.app
+  }, /*#__PURE__*/React.createElement("style", null, globalCss), tab !== "day" && /*#__PURE__*/React.createElement(TopBar, {
+    tab: tab,
+    cursor: cursor,
+    setCursor: setCursor,
+    permission: permission,
+    requestPermission: requestPermission
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.body
+  }, tab === "day" && /*#__PURE__*/React.createElement(DayView, {
+    data: data,
+    save: save,
+    cursor: cursor,
+    setCursor: setCursor,
+    permission: permission,
+    requestPermission: requestPermission
+  }), tab === "week" && /*#__PURE__*/React.createElement(WeekView, {
+    data: data,
+    save: save,
+    cursor: cursor,
+    setCursor: setCursor,
+    setTab: setTab
+  }), tab === "month" && /*#__PURE__*/React.createElement(MonthView, {
+    data: data,
+    save: save,
+    cursor: cursor,
+    setCursor: setCursor,
+    setTab: setTab
+  }), tab === "goals" && /*#__PURE__*/React.createElement(ZieleView, {
+    data: data,
+    save: save,
+    cursor: cursor,
+    setCursor: setCursor,
+    setTab: setTab
+  })), /*#__PURE__*/React.createElement(TabBar, {
+    tab: tab,
+    setTab: setTab
+  }));
 }
 
 // ---------- Top bar for week/month/year ----------
@@ -544,34 +539,99 @@ function TopBar({
     }
   };
   // vision tab reuses the year/month step logic (steps by year)
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.topBar,
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.topBarRow,
-      children: [/*#__PURE__*/_jsxDEV("span", {
-        style: S.brand,
-        children: "VORHABEN"
-      }, void 0, false), permission !== "granted" && permission !== "unsupported" && /*#__PURE__*/_jsxDEV("button", {
-        style: S.bellBtn,
-        onClick: requestPermission,
-        children: "🔔 Erinnerungen"
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      style: S.topBarNav,
-      children: [/*#__PURE__*/_jsxDEV("button", {
-        style: S.navBtn,
-        onClick: () => step(-1),
-        children: "‹"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        style: S.topBarTitle,
-        children: title
-      }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-        style: S.navBtn,
-        onClick: () => step(1),
-        children: "›"
-      }, void 0, false)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.topBar
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.topBarRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.brand
+  }, "VORHABEN"), permission !== "granted" && permission !== "unsupported" && /*#__PURE__*/React.createElement("button", {
+    style: S.bellBtn,
+    onClick: requestPermission
+  }, "🔔 Erinnerungen")), /*#__PURE__*/React.createElement("div", {
+    style: S.topBarNav
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.navBtn,
+    onClick: () => step(-1)
+  }, "‹"), /*#__PURE__*/React.createElement("div", {
+    style: S.topBarTitle
+  }, title), /*#__PURE__*/React.createElement("button", {
+    style: S.navBtn,
+    onClick: () => step(1)
+  }, "›")));
+}
+
+// ---------- Task row with long-press-to-add-note ----------
+function TaskItemRow({
+  item,
+  variant,
+  onToggle,
+  onRemove,
+  onSaveNote
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(item.note || "");
+  const pressTimer = useRef(null);
+  const startPress = () => {
+    pressTimer.current = setTimeout(() => {
+      setDraft(item.note || "");
+      setEditing(true);
+    }, 480);
+  };
+  const cancelPress = () => {
+    if (pressTimer.current) clearTimeout(pressTimer.current);
+  };
+  const rowStyle = variant === "termine" ? S.termineRow : S.taskRow;
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.taskItemWrap
+  }, /*#__PURE__*/React.createElement("div", {
+    style: rowStyle,
+    onPointerDown: startPress,
+    onPointerUp: cancelPress,
+    onPointerLeave: cancelPress,
+    onPointerCancel: cancelPress
+  }, /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.checkbox,
+      ...(item.done ? S.checkboxDone : {})
+    },
+    onClick: () => onToggle(item.id)
+  }, item.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.taskTitle,
+      flex: 1,
+      ...(item.done ? S.taskDone : {})
+    }
+  }, item.title, item.note && /*#__PURE__*/React.createElement("span", {
+    style: S.noteDot
+  })), variant === "termine" && /*#__PURE__*/React.createElement("div", {
+    style: S.termineTime
+  }, item.time), /*#__PURE__*/React.createElement("button", {
+    style: S.removeBtn,
+    onClick: () => onRemove(item.id)
+  }, "×")), editing && /*#__PURE__*/React.createElement("div", {
+    style: S.noteEditWrap
+  }, /*#__PURE__*/React.createElement("textarea", {
+    style: S.visionTextarea,
+    placeholder: "Notiz …",
+    value: draft,
+    onChange: e => setDraft(e.target.value),
+    autoFocus: true
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.visionEditRow
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.scopeBtn,
+    onClick: () => setEditing(false)
+  }, "Abbrechen"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.scopeBtn,
+      ...S.scopeBtnActive
+    },
+    onClick: () => {
+      onSaveNote(item.id, draft.trim());
+      setEditing(false);
+    }
+  }, "Speichern"))));
 }
 
 // ---------- Day View ----------
@@ -643,6 +703,41 @@ function DayView({
       }
     });
   };
+  const saveNote = (id, note) => {
+    const items = day.items.map(t => t.id === id ? {
+      ...t,
+      note
+    } : t);
+    save({
+      ...data,
+      days: {
+        ...data.days,
+        [key]: {
+          ...day,
+          items
+        }
+      }
+    });
+  };
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [notesDraft, setNotesDraft] = useState("");
+  const openNotes = () => {
+    setNotesDraft(day.notes || "");
+    setNotesOpen(true);
+  };
+  const saveNotes = () => {
+    save({
+      ...data,
+      days: {
+        ...data.days,
+        [key]: {
+          ...day,
+          notes: notesDraft
+        }
+      }
+    });
+    setNotesOpen(false);
+  };
   const addFocusTheme = () => {
     if (!newFocusTheme.trim()) return;
     save({
@@ -676,253 +771,207 @@ function DayView({
       }
     });
   };
-  const termine = day.items.filter(t => t.time).sort((a, b) => a.time.localeCompare(b.time));
-  const plan = day.items.filter(t => !t.time);
+  const termine = partitionDoneLast([...day.items.filter(t => t.time)].sort((a, b) => a.time.localeCompare(b.time)));
+  const plan = partitionDoneLast(day.items.filter(t => !t.time));
   const assigned = getAssignedForDay(data, cursor);
   const totalCount = day.items.length + assigned.length;
   const doneCount = day.items.filter(t => t.done).length + assigned.filter(t => t.done).length;
   const pct = totalCount ? Math.round(doneCount / totalCount * 100) : 0;
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.dayPage,
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.dateHeader,
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        style: S.dateHeaderLeft,
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          style: S.brand,
-          children: "VORHABEN"
-        }, void 0, false), permission !== "granted" && permission !== "unsupported" && /*#__PURE__*/_jsxDEV("button", {
-          style: S.bellBtnSmall,
-          onClick: requestPermission,
-          children: "🔔"
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        style: S.dateHeaderRow,
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          style: S.navBtnGhost,
-          onClick: () => setCursor(addDays(cursor, -1)),
-          children: "‹"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          style: S.dateBlock,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            style: S.weekdayLabel,
-            children: WEEKDAYS_FULL[(cursor.getDay() + 6) % 7]
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            style: S.bigDate,
-            children: cursor.getDate()
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            style: S.monthLabel,
-            children: MONTHS[cursor.getMonth()]
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          style: S.navBtnGhost,
-          onClick: () => setCursor(addDays(cursor, 1)),
-          children: "›"
-        }, void 0, false)]
-      }, void 0, true), !isToday && /*#__PURE__*/_jsxDEV("button", {
-        style: S.todayLink,
-        onClick: () => setCursor(new Date()),
-        children: "Heute"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        style: S.inkTrack,
-        children: /*#__PURE__*/_jsxDEV("div", {
-          style: {
-            ...S.inkFill,
-            width: `${pct}%`
-          }
-        }, void 0, false)
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      style: S.termineSticky,
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        style: S.sectionLabel,
-        children: "Termine"
-      }, void 0, false), termine.length === 0 ? /*#__PURE__*/_jsxDEV("div", {
-        style: S.emptySmall,
-        children: "Keine festen Termine heute"
-      }, void 0, false) : /*#__PURE__*/_jsxDEV("div", {
-        style: S.list,
-        children: termine.map(t => /*#__PURE__*/_jsxDEV("div", {
-          style: S.termineRow,
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            style: {
-              ...S.checkbox,
-              ...(t.done ? S.checkboxDone : {})
-            },
-            onClick: () => toggle(t.id),
-            children: t.done ? "✓" : ""
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            style: {
-              ...S.taskTitle,
-              flex: 1,
-              ...(t.done ? S.taskDone : {})
-            },
-            children: t.title
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            style: S.termineTime,
-            children: t.time
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            style: S.removeBtn,
-            onClick: () => remove(t.id),
-            children: "×"
-          }, void 0, false)]
-        }, t.id, true))
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      style: S.planScroll,
-      children: [focusThemes.length > 0 && /*#__PURE__*/_jsxDEV(_Fragment, {
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          style: S.sectionLabel,
-          children: "Fokus – hast du dich heute daran gehalten?"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          style: {
-            ...S.list,
-            marginBottom: 22
-          },
-          children: focusThemes.map(ft => {
-            const rate = focusRate(data, ft.id, cursor);
-            const val = focusChecks[ft.id];
-            return /*#__PURE__*/_jsxDEV("div", {
-              style: S.focusThemeRow,
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                style: {
-                  flex: 1
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  style: S.taskTitle,
-                  children: ft.title
-                }, void 0, false), rate.total > 0 && /*#__PURE__*/_jsxDEV("div", {
-                  style: S.goalTag,
-                  children: [rate.count, "/", rate.total, " der letzten Tage eingehalten"]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                style: {
-                  ...S.focusYesBtn,
-                  ...(val === true ? S.focusYesBtnActive : {})
-                },
-                onClick: () => setFocusCheck(ft.id, true),
-                children: "✓"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                style: {
-                  ...S.focusNoBtn,
-                  ...(val === false ? S.focusNoBtnActive : {})
-                },
-                onClick: () => setFocusCheck(ft.id, false),
-                children: "✗"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                style: S.removeBtn,
-                onClick: () => removeFocusTheme(ft.id),
-                children: "×"
-              }, void 0, false)]
-            }, ft.id, true);
-          })
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        style: {
-          ...S.addRow,
-          marginBottom: 22
-        },
-        children: [/*#__PURE__*/_jsxDEV("input", {
-          style: S.input,
-          placeholder: "z.B. Kein TikTok, mehr fürs Business …",
-          value: newFocusTheme,
-          onChange: e => setNewFocusTheme(e.target.value),
-          onKeyDown: e => e.key === "Enter" && addFocusTheme()
-        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-          style: S.addBtn,
-          onClick: addFocusTheme,
-          children: "+"
-        }, void 0, false), /*#__PURE__*/_jsxDEV(InfoHint, {
-          text: "Trag Dinge ein, bei denen du merkst, dass dir Disziplin schwerfällt. Jeden Tag kurz ehrlich einschätzen – kein Streak-Druck, nur eine Übersicht."
-        }, void 0, false)]
-      }, void 0, true), assigned.length > 0 && /*#__PURE__*/_jsxDEV(_Fragment, {
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          style: S.sectionLabel,
-          children: "Aus deinen Zielen"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          style: {
-            ...S.list,
-            marginBottom: 22
-          },
-          children: assigned.map(s => /*#__PURE__*/_jsxDEV("div", {
-            style: S.goalTaskRow,
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              style: {
-                ...S.checkbox,
-                ...(s.done ? S.checkboxDone : {})
-              },
-              onClick: () => toggleDayAssigned(data, save, s),
-              children: s.done ? "✓" : ""
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              style: {
-                flex: 1
-              },
-              children: [/*#__PURE__*/_jsxDEV("div", {
-                style: {
-                  ...S.taskTitle,
-                  ...(s.done ? S.taskDone : {})
-                },
-                children: s.title
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                style: S.goalTag,
-                children: [s.sourceLabel, " · ", s.goalTitle]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, s.kind + s.id, true))
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        style: S.sectionLabel,
-        children: "Tagesplan"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        style: S.list,
-        children: [plan.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-          style: S.emptySmall,
-          children: "Was steht sonst noch an?"
-        }, void 0, false), plan.map(t => /*#__PURE__*/_jsxDEV("div", {
-          style: S.taskRow,
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            style: {
-              ...S.checkbox,
-              ...(t.done ? S.checkboxDone : {})
-            },
-            onClick: () => toggle(t.id),
-            children: t.done ? "✓" : ""
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            style: {
-              ...S.taskTitle,
-              flex: 1,
-              ...(t.done ? S.taskDone : {})
-            },
-            children: t.title
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            style: S.removeBtn,
-            onClick: () => remove(t.id),
-            children: "×"
-          }, void 0, false)]
-        }, t.id, true))]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        style: S.addRow,
-        children: [/*#__PURE__*/_jsxDEV("input", {
-          style: S.input,
-          placeholder: "Neuer Punkt oder Termin …",
-          value: text,
-          onChange: e => setText(e.target.value),
-          onKeyDown: e => e.key === "Enter" && addItem()
-        }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-          style: S.timeInput,
-          type: "time",
-          value: time,
-          onChange: e => setTime(e.target.value)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-          style: S.addBtn,
-          onClick: addItem,
-          children: "+"
-        }, void 0, false), /*#__PURE__*/_jsxDEV(InfoHint, {
-          text: "Uhrzeit eintragen → wird oben als Termin fixiert. Ohne Uhrzeit → landet im Tagesplan. Für einen zukünftigen Tag: einfach im Monat auf den Tag tippen und dort eintragen."
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.dayPage
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.dateHeader
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.dateHeaderLeft
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.brand
+  }, "VORHABEN"), permission !== "granted" && permission !== "unsupported" && /*#__PURE__*/React.createElement("button", {
+    style: S.bellBtnSmall,
+    onClick: requestPermission
+  }, "🔔")), /*#__PURE__*/React.createElement("div", {
+    style: S.dateHeaderRow
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.navBtnGhost,
+    onClick: () => setCursor(addDays(cursor, -1))
+  }, "‹"), /*#__PURE__*/React.createElement("div", {
+    style: S.dateBlock
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.weekdayLabel
+  }, WEEKDAYS_FULL[(cursor.getDay() + 6) % 7]), /*#__PURE__*/React.createElement("div", {
+    style: S.bigDate
+  }, cursor.getDate()), /*#__PURE__*/React.createElement("div", {
+    style: S.monthLabel
+  }, MONTHS[cursor.getMonth()])), /*#__PURE__*/React.createElement("button", {
+    style: S.navBtnGhost,
+    onClick: () => setCursor(addDays(cursor, 1))
+  }, "›")), !isToday && /*#__PURE__*/React.createElement("button", {
+    style: S.todayLink,
+    onClick: () => setCursor(new Date())
+  }, "Heute"), /*#__PURE__*/React.createElement("div", {
+    style: S.inkTrack
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.inkFill,
+      width: `${pct}%`
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: S.termineSticky
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Termine"), termine.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    style: S.emptySmall
+  }, "Keine festen Termine heute") : /*#__PURE__*/React.createElement("div", {
+    style: S.list
+  }, termine.map(t => /*#__PURE__*/React.createElement(TaskItemRow, {
+    key: t.id,
+    item: t,
+    variant: "termine",
+    onToggle: toggle,
+    onRemove: remove,
+    onSaveNote: saveNote
+  })))), /*#__PURE__*/React.createElement("div", {
+    style: S.planScroll
+  }, focusThemes.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Fokus – hast du dich heute daran gehalten?"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.list,
+      marginBottom: 22
+    }
+  }, focusThemes.map(ft => {
+    const rate = focusRate(data, ft.id, cursor);
+    const val = focusChecks[ft.id];
+    return /*#__PURE__*/React.createElement("div", {
+      key: ft.id,
+      style: S.focusThemeRow
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.taskTitle
+    }, ft.title), rate.total > 0 && /*#__PURE__*/React.createElement("div", {
+      style: S.goalTag
+    }, rate.count, "/", rate.total, " der letzten Tage eingehalten")), /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.focusYesBtn,
+        ...(val === true ? S.focusYesBtnActive : {})
+      },
+      onClick: () => setFocusCheck(ft.id, true)
+    }, "✓"), /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.focusNoBtn,
+        ...(val === false ? S.focusNoBtnActive : {})
+      },
+      onClick: () => setFocusCheck(ft.id, false)
+    }, "✗"), /*#__PURE__*/React.createElement("button", {
+      style: S.removeBtn,
+      onClick: () => removeFocusTheme(ft.id)
+    }, "×"));
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.addRow,
+      marginBottom: 22
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    style: S.input,
+    placeholder: "z.B. Kein TikTok, mehr fürs Business …",
+    value: newFocusTheme,
+    onChange: e => setNewFocusTheme(e.target.value),
+    onKeyDown: e => e.key === "Enter" && addFocusTheme()
+  }), /*#__PURE__*/React.createElement("button", {
+    style: S.addBtn,
+    onClick: addFocusTheme
+  }, "+"), /*#__PURE__*/React.createElement(InfoHint, {
+    text: "Trag Dinge ein, bei denen du merkst, dass dir Disziplin schwerfällt. Jeden Tag kurz ehrlich einschätzen – kein Streak-Druck, nur eine Übersicht."
+  })), assigned.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Aus deinen Zielen"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.list,
+      marginBottom: 22
+    }
+  }, assigned.map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.kind + s.id,
+    style: S.goalTaskRow
+  }, /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.checkbox,
+      ...(s.done ? S.checkboxDone : {})
+    },
+    onClick: () => toggleDayAssigned(data, save, s)
+  }, s.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.taskTitle,
+      ...(s.done ? S.taskDone : {})
+    }
+  }, s.title), /*#__PURE__*/React.createElement("div", {
+    style: S.goalTag
+  }, s.sourceLabel, " · ", s.goalTitle)))))), /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Tagesplan"), /*#__PURE__*/React.createElement("div", {
+    style: S.list
+  }, plan.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: S.emptySmall
+  }, "Was steht sonst noch an?"), plan.map(t => /*#__PURE__*/React.createElement(TaskItemRow, {
+    key: t.id,
+    item: t,
+    variant: "plan",
+    onToggle: toggle,
+    onRemove: remove,
+    onSaveNote: saveNote
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.sectionLabel,
+      marginTop: 22
+    }
+  }, "Notizen"), notesOpen ? /*#__PURE__*/React.createElement("div", {
+    style: S.leitsatzCard
+  }, /*#__PURE__*/React.createElement("textarea", {
+    style: S.visionTextarea,
+    placeholder: "Frei schreiben …",
+    value: notesDraft,
+    onChange: e => setNotesDraft(e.target.value),
+    autoFocus: true
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.visionEditRow
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.scopeBtn,
+    onClick: () => setNotesOpen(false)
+  }, "Abbrechen"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.scopeBtn,
+      ...S.scopeBtnActive
+    },
+    onClick: saveNotes
+  }, "Speichern"))) : /*#__PURE__*/React.createElement("div", {
+    style: S.leitsatzCard
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.leitsatzText,
+    onClick: openNotes
+  }, day.notes ? day.notes.length > 90 ? day.notes.slice(0, 90) + "…" : day.notes : "+ Notiz für heute")), /*#__PURE__*/React.createElement("div", {
+    style: S.addRow
+  }, /*#__PURE__*/React.createElement("input", {
+    style: S.input,
+    placeholder: "Neuer Punkt oder Termin …",
+    value: text,
+    onChange: e => setText(e.target.value),
+    onKeyDown: e => e.key === "Enter" && addItem()
+  }), /*#__PURE__*/React.createElement("input", {
+    style: S.timeInput,
+    type: "time",
+    value: time,
+    onChange: e => setTime(e.target.value)
+  }), /*#__PURE__*/React.createElement("button", {
+    style: S.addBtn,
+    onClick: addItem
+  }, "+"), /*#__PURE__*/React.createElement(InfoHint, {
+    text: "Uhrzeit eintragen → wird oben als Termin fixiert. Ohne Uhrzeit → landet im Tagesplan. Für einen zukünftigen Tag: einfach im Monat auf den Tag tippen und dort eintragen."
+  }))));
 }
 
 // ---------- Simple Goals (Week level: subtasks assign only to a day) ----------
@@ -939,138 +988,117 @@ function WeekGoalsSection({
   const [openId, setOpenId] = useState(null);
   const [subText, setSubText] = useState({});
   const [subDate, setSubDate] = useState({});
-  return /*#__PURE__*/_jsxDEV(_Fragment, {
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.sectionLabel,
-      children: "Wochenziele"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      style: S.list,
-      children: [goals.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-        style: S.emptySmall,
-        children: "Was soll diese Woche stehen?"
-      }, void 0, false), goals.map(g => {
-        const open = openId === g.id;
-        const subs = g.subtasks || [];
-        const subDone = subs.filter(s => s.done).length;
-        return /*#__PURE__*/_jsxDEV("div", {
-          style: S.goalCard,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            style: S.taskRowFlat,
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              style: {
-                ...S.checkbox,
-                ...(g.done ? S.checkboxDone : {})
-              },
-              onClick: () => onToggleGoal(g.id),
-              children: g.done ? "✓" : ""
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              style: {
-                ...S.taskTitle,
-                flex: 1,
-                ...(g.done ? S.taskDone : {})
-              },
-              children: [g.title, subs.length > 0 && /*#__PURE__*/_jsxDEV("span", {
-                style: S.subCount,
-                children: [" · ", subDone, "/", subs.length]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              style: S.expandBtn,
-              onClick: () => setOpenId(open ? null : g.id),
-              children: open ? "–" : "+"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              style: S.removeBtn,
-              onClick: () => onRemoveGoal(g.id),
-              children: "×"
-            }, void 0, false)]
-          }, void 0, true), open && /*#__PURE__*/_jsxDEV("div", {
-            style: S.subsWrap,
-            children: [subs.map(s => /*#__PURE__*/_jsxDEV("div", {
-              style: S.subRow,
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                style: {
-                  ...S.checkboxSmall,
-                  ...(s.done ? S.checkboxDone : {})
-                },
-                onClick: () => onToggleSubtask(g.id, s.id),
-                children: s.done ? "✓" : ""
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                style: {
-                  flex: 1
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  style: {
-                    ...S.subTitle,
-                    ...(s.done ? S.taskDone : {})
-                  },
-                  children: s.title
-                }, void 0, false), s.date && /*#__PURE__*/_jsxDEV("div", {
-                  style: S.subDateTag,
-                  children: fmtShort(s.date)
-                }, void 0, false)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                style: S.removeBtn,
-                onClick: () => onRemoveSubtask(g.id, s.id),
-                children: "×"
-              }, void 0, false)]
-            }, s.id, true)), /*#__PURE__*/_jsxDEV("div", {
-              style: S.subAddRow,
-              children: [/*#__PURE__*/_jsxDEV("input", {
-                style: S.subInput,
-                placeholder: "Unterpunkt …",
-                value: subText[g.id] || "",
-                onChange: e => setSubText({
-                  ...subText,
-                  [g.id]: e.target.value
-                })
-              }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                style: S.subDateInput,
-                type: "date",
-                value: subDate[g.id] || "",
-                onChange: e => setSubDate({
-                  ...subDate,
-                  [g.id]: e.target.value
-                })
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                style: S.subAddBtn,
-                onClick: () => {
-                  const t = (subText[g.id] || "").trim();
-                  if (!t) return;
-                  onAddSubtask(g.id, t, subDate[g.id] || null);
-                  setSubText({
-                    ...subText,
-                    [g.id]: ""
-                  });
-                  setSubDate({
-                    ...subDate,
-                    [g.id]: ""
-                  });
-                },
-                children: "+"
-              }, void 0, false), /*#__PURE__*/_jsxDEV(InfoHint, {
-                text: "Datum wählen, damit der Punkt an dem Tag im Tagesplan auftaucht."
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, g.id, true);
-      })]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      style: S.addRow,
-      children: [/*#__PURE__*/_jsxDEV("input", {
-        style: S.input,
-        placeholder: "Neues Wochenziel",
-        value: goalText,
-        onChange: e => setGoalText(e.target.value),
-        onKeyDown: e => e.key === "Enter" && (onAddGoal(goalText), setGoalText(""))
-      }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-        style: S.addBtn,
-        onClick: () => {
-          onAddGoal(goalText);
-          setGoalText("");
-        },
-        children: "+"
-      }, void 0, false)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Wochenziele"), /*#__PURE__*/React.createElement("div", {
+    style: S.list
+  }, goals.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: S.emptySmall
+  }, "Was soll diese Woche stehen?"), goals.map(g => {
+    const open = openId === g.id;
+    const subs = g.subtasks || [];
+    const subDone = subs.filter(s => s.done).length;
+    return /*#__PURE__*/React.createElement("div", {
+      key: g.id,
+      style: S.goalCard
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.taskRowFlat
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.checkbox,
+        ...(g.done ? S.checkboxDone : {})
+      },
+      onClick: () => onToggleGoal(g.id)
+    }, g.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+      style: {
+        ...S.taskTitle,
+        flex: 1,
+        ...(g.done ? S.taskDone : {})
+      }
+    }, g.title, subs.length > 0 && /*#__PURE__*/React.createElement("span", {
+      style: S.subCount
+    }, " · ", subDone, "/", subs.length)), /*#__PURE__*/React.createElement("button", {
+      style: S.expandBtn,
+      onClick: () => setOpenId(open ? null : g.id)
+    }, open ? "–" : "+"), /*#__PURE__*/React.createElement("button", {
+      style: S.removeBtn,
+      onClick: () => onRemoveGoal(g.id)
+    }, "×")), open && /*#__PURE__*/React.createElement("div", {
+      style: S.subsWrap
+    }, subs.map(s => /*#__PURE__*/React.createElement("div", {
+      key: s.id,
+      style: S.subRow
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.checkboxSmall,
+        ...(s.done ? S.checkboxDone : {})
+      },
+      onClick: () => onToggleSubtask(g.id, s.id)
+    }, s.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        ...S.subTitle,
+        ...(s.done ? S.taskDone : {})
+      }
+    }, s.title), s.date && /*#__PURE__*/React.createElement("div", {
+      style: S.subDateTag
+    }, fmtShort(s.date))), /*#__PURE__*/React.createElement("button", {
+      style: S.removeBtn,
+      onClick: () => onRemoveSubtask(g.id, s.id)
+    }, "×"))), /*#__PURE__*/React.createElement("div", {
+      style: S.subAddRow
+    }, /*#__PURE__*/React.createElement("input", {
+      style: S.subInput,
+      placeholder: "Unterpunkt …",
+      value: subText[g.id] || "",
+      onChange: e => setSubText({
+        ...subText,
+        [g.id]: e.target.value
+      })
+    }), /*#__PURE__*/React.createElement("input", {
+      style: S.subDateInput,
+      type: "date",
+      value: subDate[g.id] || "",
+      onChange: e => setSubDate({
+        ...subDate,
+        [g.id]: e.target.value
+      })
+    }), /*#__PURE__*/React.createElement("button", {
+      style: S.subAddBtn,
+      onClick: () => {
+        const t = (subText[g.id] || "").trim();
+        if (!t) return;
+        onAddSubtask(g.id, t, subDate[g.id] || null);
+        setSubText({
+          ...subText,
+          [g.id]: ""
+        });
+        setSubDate({
+          ...subDate,
+          [g.id]: ""
+        });
+      }
+    }, "+"), /*#__PURE__*/React.createElement(InfoHint, {
+      text: "Datum wählen, damit der Punkt an dem Tag im Tagesplan auftaucht."
+    }))));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: S.addRow
+  }, /*#__PURE__*/React.createElement("input", {
+    style: S.input,
+    placeholder: "Neues Wochenziel",
+    value: goalText,
+    onChange: e => setGoalText(e.target.value),
+    onKeyDown: e => e.key === "Enter" && (onAddGoal(goalText), setGoalText(""))
+  }), /*#__PURE__*/React.createElement("button", {
+    style: S.addBtn,
+    onClick: () => {
+      onAddGoal(goalText);
+      setGoalText("");
+    }
+  }, "+")));
 }
 
 // ---------- Advanced Goals (Month / Year level: subtasks assign to a week or a day; week-scoped ones break down further into days) ----------
@@ -1095,241 +1123,206 @@ function AdvancedGoalsSection({
   const [subDate, setSubDate] = useState({});
   const [childText, setChildText] = useState({});
   const [childDate, setChildDate] = useState({});
-  return /*#__PURE__*/_jsxDEV(_Fragment, {
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.sectionLabel,
-      children: label
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      style: S.list,
-      children: [goals.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-        style: S.emptySmall,
-        children: "Was soll hier stehen?"
-      }, void 0, false), goals.map(g => {
-        const open = openGoal === g.id;
-        const subs = g.subtasks || [];
-        const subDone = subs.filter(s => s.done).length;
-        return /*#__PURE__*/_jsxDEV("div", {
-          style: S.goalCard,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            style: S.taskRowFlat,
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              style: {
-                ...S.checkbox,
-                ...(g.done ? S.checkboxDone : {})
-              },
-              onClick: () => onToggleGoal(g.id),
-              children: g.done ? "✓" : ""
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              style: {
-                ...S.taskTitle,
-                flex: 1,
-                ...(g.done ? S.taskDone : {})
-              },
-              children: [g.title, subs.length > 0 && /*#__PURE__*/_jsxDEV("span", {
-                style: S.subCount,
-                children: [" · ", subDone, "/", subs.length]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-              style: S.expandBtn,
-              onClick: () => setOpenGoal(open ? null : g.id),
-              children: open ? "–" : "+"
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              style: S.removeBtn,
-              onClick: () => onRemoveGoal(g.id),
-              children: "×"
-            }, void 0, false)]
-          }, void 0, true), open && /*#__PURE__*/_jsxDEV("div", {
-            style: S.subsWrap,
-            children: [subs.map(s => {
-              const subKey = g.id + ":" + s.id;
-              const subOpen = openSub === subKey;
-              return /*#__PURE__*/_jsxDEV("div", {
-                style: S.subBlock,
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  style: S.subRow,
-                  children: [/*#__PURE__*/_jsxDEV("button", {
-                    style: {
-                      ...S.checkboxSmall,
-                      ...(s.done ? S.checkboxDone : {})
-                    },
-                    onClick: () => onToggleSubtask(g.id, s.id),
-                    children: s.done ? "✓" : ""
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                    style: {
-                      flex: 1
-                    },
-                    children: [/*#__PURE__*/_jsxDEV("div", {
-                      style: {
-                        ...S.subTitle,
-                        ...(s.done ? S.taskDone : {})
-                      },
-                      children: s.title
-                    }, void 0, false), s.scope === "day" && s.date && /*#__PURE__*/_jsxDEV("div", {
-                      style: S.subDateTag,
-                      children: fmtShort(s.date)
-                    }, void 0, false), s.scope === "week" && s.weekKey && /*#__PURE__*/_jsxDEV("div", {
-                      style: S.subDateTag,
-                      children: [fmtWeek(s.weekKey), s.children?.length ? ` · ${s.children.filter(c => c.done).length}/${s.children.length}` : ""]
-                    }, void 0, true)]
-                  }, void 0, true), s.scope === "week" && /*#__PURE__*/_jsxDEV("button", {
-                    style: S.expandBtnSmall,
-                    onClick: () => setOpenSub(subOpen ? null : subKey),
-                    children: subOpen ? "–" : "+"
-                  }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                    style: S.removeBtn,
-                    onClick: () => onRemoveSubtask(g.id, s.id),
-                    children: "×"
-                  }, void 0, false)]
-                }, void 0, true), s.scope === "week" && subOpen && /*#__PURE__*/_jsxDEV("div", {
-                  style: S.childWrap,
-                  children: [(s.children || []).map(c => /*#__PURE__*/_jsxDEV("div", {
-                    style: S.childRow,
-                    children: [/*#__PURE__*/_jsxDEV("button", {
-                      style: {
-                        ...S.checkboxTiny,
-                        ...(c.done ? S.checkboxDone : {})
-                      },
-                      onClick: () => onToggleChild(g.id, s.id, c.id),
-                      children: c.done ? "✓" : ""
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                      style: {
-                        flex: 1
-                      },
-                      children: [/*#__PURE__*/_jsxDEV("div", {
-                        style: {
-                          ...S.childTitle,
-                          ...(c.done ? S.taskDone : {})
-                        },
-                        children: c.title
-                      }, void 0, false), c.date && /*#__PURE__*/_jsxDEV("div", {
-                        style: S.subDateTag,
-                        children: fmtShort(c.date)
-                      }, void 0, false)]
-                    }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                      style: S.removeBtn,
-                      onClick: () => onRemoveChild(g.id, s.id, c.id),
-                      children: "×"
-                    }, void 0, false)]
-                  }, c.id, true)), /*#__PURE__*/_jsxDEV("div", {
-                    style: S.subAddRow,
-                    children: [/*#__PURE__*/_jsxDEV("input", {
-                      style: S.subInput,
-                      placeholder: "Tag-Aufgabe in dieser Woche …",
-                      value: childText[subKey] || "",
-                      onChange: e => setChildText({
-                        ...childText,
-                        [subKey]: e.target.value
-                      })
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                      style: S.subDateInput,
-                      type: "date",
-                      value: childDate[subKey] || "",
-                      onChange: e => setChildDate({
-                        ...childDate,
-                        [subKey]: e.target.value
-                      })
-                    }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                      style: S.subAddBtn,
-                      onClick: () => {
-                        const t = (childText[subKey] || "").trim();
-                        if (!t) return;
-                        onAddChild(g.id, s.id, t, childDate[subKey] || null);
-                        setChildText({
-                          ...childText,
-                          [subKey]: ""
-                        });
-                        setChildDate({
-                          ...childDate,
-                          [subKey]: ""
-                        });
-                      },
-                      children: "+"
-                    }, void 0, false)]
-                  }, void 0, true)]
-                }, void 0, true)]
-              }, s.id, true);
-            }), /*#__PURE__*/_jsxDEV("div", {
-              style: S.subAddBlock,
-              children: [/*#__PURE__*/_jsxDEV("input", {
-                style: S.subInput,
-                placeholder: "Unterpunkt …",
-                value: subText[g.id] || "",
-                onChange: e => setSubText({
-                  ...subText,
-                  [g.id]: e.target.value
-                })
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                style: S.scopeRow,
-                children: [/*#__PURE__*/_jsxDEV("button", {
-                  style: {
-                    ...S.scopeBtn,
-                    ...((subScope[g.id] || "day") === "day" ? S.scopeBtnActive : {})
-                  },
-                  onClick: () => setSubScope({
-                    ...subScope,
-                    [g.id]: "day"
-                  }),
-                  children: "Tag"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                  style: {
-                    ...S.scopeBtn,
-                    ...(subScope[g.id] === "week" ? S.scopeBtnActive : {})
-                  },
-                  onClick: () => setSubScope({
-                    ...subScope,
-                    [g.id]: "week"
-                  }),
-                  children: "Woche"
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  style: S.subDateInput,
-                  type: "date",
-                  value: subDate[g.id] || "",
-                  onChange: e => setSubDate({
-                    ...subDate,
-                    [g.id]: e.target.value
-                  })
-                }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                  style: S.subAddBtn,
-                  onClick: () => {
-                    const t = (subText[g.id] || "").trim();
-                    if (!t || !subDate[g.id]) return;
-                    onAddSubtask(g.id, t, subScope[g.id] || "day", subDate[g.id]);
-                    setSubText({
-                      ...subText,
-                      [g.id]: ""
-                    });
-                    setSubDate({
-                      ...subDate,
-                      [g.id]: ""
-                    });
-                  },
-                  children: "+"
-                }, void 0, false), /*#__PURE__*/_jsxDEV(InfoHint, {
-                  text: "\"Tag\" legt den Punkt direkt in einen Tagesplan. \"Woche\" zeigt ihn bei der jeweiligen Woche und lässt sich dort weiter in einzelne Tage aufteilen."
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, g.id, true);
-      })]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      style: S.addRow,
-      children: [/*#__PURE__*/_jsxDEV("input", {
-        style: S.input,
-        placeholder: `Neues ${label.slice(0, -1)}`,
-        value: goalText,
-        onChange: e => setGoalText(e.target.value),
-        onKeyDown: e => e.key === "Enter" && (onAddGoal(goalText), setGoalText(""))
-      }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-        style: S.addBtn,
-        onClick: () => {
-          onAddGoal(goalText);
-          setGoalText("");
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, label), /*#__PURE__*/React.createElement("div", {
+    style: S.list
+  }, goals.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: S.emptySmall
+  }, "Was soll hier stehen?"), goals.map(g => {
+    const open = openGoal === g.id;
+    const subs = g.subtasks || [];
+    const subDone = subs.filter(s => s.done).length;
+    return /*#__PURE__*/React.createElement("div", {
+      key: g.id,
+      style: S.goalCard
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.taskRowFlat
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.checkbox,
+        ...(g.done ? S.checkboxDone : {})
+      },
+      onClick: () => onToggleGoal(g.id)
+    }, g.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+      style: {
+        ...S.taskTitle,
+        flex: 1,
+        ...(g.done ? S.taskDone : {})
+      }
+    }, g.title, subs.length > 0 && /*#__PURE__*/React.createElement("span", {
+      style: S.subCount
+    }, " · ", subDone, "/", subs.length)), /*#__PURE__*/React.createElement("button", {
+      style: S.expandBtn,
+      onClick: () => setOpenGoal(open ? null : g.id)
+    }, open ? "–" : "+"), /*#__PURE__*/React.createElement("button", {
+      style: S.removeBtn,
+      onClick: () => onRemoveGoal(g.id)
+    }, "×")), open && /*#__PURE__*/React.createElement("div", {
+      style: S.subsWrap
+    }, subs.map(s => {
+      const subKey = g.id + ":" + s.id;
+      const subOpen = openSub === subKey;
+      return /*#__PURE__*/React.createElement("div", {
+        key: s.id,
+        style: S.subBlock
+      }, /*#__PURE__*/React.createElement("div", {
+        style: S.subRow
+      }, /*#__PURE__*/React.createElement("button", {
+        style: {
+          ...S.checkboxSmall,
+          ...(s.done ? S.checkboxDone : {})
         },
-        children: "+"
-      }, void 0, false)]
-    }, void 0, true)]
-  }, void 0, true);
+        onClick: () => onToggleSubtask(g.id, s.id)
+      }, s.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          ...S.subTitle,
+          ...(s.done ? S.taskDone : {})
+        }
+      }, s.title), s.scope === "day" && s.date && /*#__PURE__*/React.createElement("div", {
+        style: S.subDateTag
+      }, fmtShort(s.date)), s.scope === "week" && s.weekKey && /*#__PURE__*/React.createElement("div", {
+        style: S.subDateTag
+      }, fmtWeek(s.weekKey), s.children?.length ? ` · ${s.children.filter(c => c.done).length}/${s.children.length}` : "")), s.scope === "week" && /*#__PURE__*/React.createElement("button", {
+        style: S.expandBtnSmall,
+        onClick: () => setOpenSub(subOpen ? null : subKey)
+      }, subOpen ? "–" : "+"), /*#__PURE__*/React.createElement("button", {
+        style: S.removeBtn,
+        onClick: () => onRemoveSubtask(g.id, s.id)
+      }, "×")), s.scope === "week" && subOpen && /*#__PURE__*/React.createElement("div", {
+        style: S.childWrap
+      }, (s.children || []).map(c => /*#__PURE__*/React.createElement("div", {
+        key: c.id,
+        style: S.childRow
+      }, /*#__PURE__*/React.createElement("button", {
+        style: {
+          ...S.checkboxTiny,
+          ...(c.done ? S.checkboxDone : {})
+        },
+        onClick: () => onToggleChild(g.id, s.id, c.id)
+      }, c.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          ...S.childTitle,
+          ...(c.done ? S.taskDone : {})
+        }
+      }, c.title), c.date && /*#__PURE__*/React.createElement("div", {
+        style: S.subDateTag
+      }, fmtShort(c.date))), /*#__PURE__*/React.createElement("button", {
+        style: S.removeBtn,
+        onClick: () => onRemoveChild(g.id, s.id, c.id)
+      }, "×"))), /*#__PURE__*/React.createElement("div", {
+        style: S.subAddRow
+      }, /*#__PURE__*/React.createElement("input", {
+        style: S.subInput,
+        placeholder: "Tag-Aufgabe in dieser Woche …",
+        value: childText[subKey] || "",
+        onChange: e => setChildText({
+          ...childText,
+          [subKey]: e.target.value
+        })
+      }), /*#__PURE__*/React.createElement("input", {
+        style: S.subDateInput,
+        type: "date",
+        value: childDate[subKey] || "",
+        onChange: e => setChildDate({
+          ...childDate,
+          [subKey]: e.target.value
+        })
+      }), /*#__PURE__*/React.createElement("button", {
+        style: S.subAddBtn,
+        onClick: () => {
+          const t = (childText[subKey] || "").trim();
+          if (!t) return;
+          onAddChild(g.id, s.id, t, childDate[subKey] || null);
+          setChildText({
+            ...childText,
+            [subKey]: ""
+          });
+          setChildDate({
+            ...childDate,
+            [subKey]: ""
+          });
+        }
+      }, "+"))));
+    }), /*#__PURE__*/React.createElement("div", {
+      style: S.subAddBlock
+    }, /*#__PURE__*/React.createElement("input", {
+      style: S.subInput,
+      placeholder: "Unterpunkt …",
+      value: subText[g.id] || "",
+      onChange: e => setSubText({
+        ...subText,
+        [g.id]: e.target.value
+      })
+    }), /*#__PURE__*/React.createElement("div", {
+      style: S.scopeRow
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.scopeBtn,
+        ...((subScope[g.id] || "day") === "day" ? S.scopeBtnActive : {})
+      },
+      onClick: () => setSubScope({
+        ...subScope,
+        [g.id]: "day"
+      })
+    }, "Tag"), /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.scopeBtn,
+        ...(subScope[g.id] === "week" ? S.scopeBtnActive : {})
+      },
+      onClick: () => setSubScope({
+        ...subScope,
+        [g.id]: "week"
+      })
+    }, "Woche"), /*#__PURE__*/React.createElement("input", {
+      style: S.subDateInput,
+      type: "date",
+      value: subDate[g.id] || "",
+      onChange: e => setSubDate({
+        ...subDate,
+        [g.id]: e.target.value
+      })
+    }), /*#__PURE__*/React.createElement("button", {
+      style: S.subAddBtn,
+      onClick: () => {
+        const t = (subText[g.id] || "").trim();
+        if (!t || !subDate[g.id]) return;
+        onAddSubtask(g.id, t, subScope[g.id] || "day", subDate[g.id]);
+        setSubText({
+          ...subText,
+          [g.id]: ""
+        });
+        setSubDate({
+          ...subDate,
+          [g.id]: ""
+        });
+      }
+    }, "+"), /*#__PURE__*/React.createElement(InfoHint, {
+      text: "\"Tag\" legt den Punkt direkt in einen Tagesplan. \"Woche\" zeigt ihn bei der jeweiligen Woche und lässt sich dort weiter in einzelne Tage aufteilen."
+    })))));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: S.addRow
+  }, /*#__PURE__*/React.createElement("input", {
+    style: S.input,
+    placeholder: `Neues ${label.slice(0, -1)}`,
+    value: goalText,
+    onChange: e => setGoalText(e.target.value),
+    onKeyDown: e => e.key === "Enter" && (onAddGoal(goalText), setGoalText(""))
+  }), /*#__PURE__*/React.createElement("button", {
+    style: S.addBtn,
+    onClick: () => {
+      onAddGoal(goalText);
+      setGoalText("");
+    }
+  }, "+")));
 }
 
 // ---------- Week View ----------
@@ -1381,190 +1374,165 @@ function WeekView({
       }
     });
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.view,
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.sectionLabel,
-      children: "Diese Woche"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      style: S.weekStrip,
-      children: days.map((d, i) => {
-        const k = dateKey(d);
-        const items = data.days[k]?.items || [];
-        const done = items.filter(t => t.done).length;
-        const isToday = dateKey(new Date()) === k;
-        return /*#__PURE__*/_jsxDEV("button", {
-          style: {
-            ...S.weekDay,
-            ...(isToday ? S.weekDayToday : {})
-          },
-          onClick: () => {
-            setCursor(d);
-            setTab("day");
-          },
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            style: S.weekDayLabel,
-            children: WEEKDAYS[i]
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            style: S.weekDayNum,
-            children: d.getDate()
-          }, void 0, false), items.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-            style: S.weekDayDots,
-            children: [done, "/", items.length]
-          }, void 0, true)]
-        }, k, true);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.view
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Diese Woche"), /*#__PURE__*/React.createElement("div", {
+    style: S.weekStrip
+  }, days.map((d, i) => {
+    const k = dateKey(d);
+    const items = data.days[k]?.items || [];
+    const done = items.filter(t => t.done).length;
+    const isToday = dateKey(new Date()) === k;
+    return /*#__PURE__*/React.createElement("button", {
+      key: k,
+      style: {
+        ...S.weekDay,
+        ...(isToday ? S.weekDayToday : {})
+      },
+      onClick: () => {
+        setCursor(d);
+        setTab("day");
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.weekDayLabel
+    }, WEEKDAYS[i]), /*#__PURE__*/React.createElement("div", {
+      style: S.weekDayNum
+    }, d.getDate()), items.length > 0 && /*#__PURE__*/React.createElement("div", {
+      style: S.weekDayDots
+    }, done, "/", items.length));
+  })), fromAbove.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Aus Monats-/Jahreszielen"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.list,
+      marginBottom: 8
+    }
+  }, fromAbove.map(s => {
+    const itemKey = s.bucket + s.id;
+    const open = openId === itemKey;
+    const children = s.children || [];
+    return /*#__PURE__*/React.createElement("div", {
+      key: itemKey,
+      style: S.goalCard
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.goalTaskRow
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.checkbox,
+        ...(s.done ? S.checkboxDone : {})
+      },
+      onClick: () => toggleAbove(s)
+    }, s.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        ...S.taskTitle,
+        ...(s.done ? S.taskDone : {})
+      }
+    }, s.title), /*#__PURE__*/React.createElement("div", {
+      style: S.goalTag
+    }, s.sourceLabel, " · ", s.goalTitle, children.length > 0 ? ` · ${children.filter(c => c.done).length}/${children.length} Tage` : "")), /*#__PURE__*/React.createElement("button", {
+      style: S.expandBtnSmall,
+      onClick: () => setOpenId(open ? null : itemKey)
+    }, open ? "–" : "+")), open && /*#__PURE__*/React.createElement("div", {
+      style: S.childWrap
+    }, children.length === 0 && /*#__PURE__*/React.createElement("div", {
+      style: S.hintSmall
+    }, "Noch nicht in Tage aufgeteilt."), children.map(c => /*#__PURE__*/React.createElement("div", {
+      key: c.id,
+      style: S.childRow
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...S.checkboxTiny,
+        ...(c.done ? S.checkboxDone : {})
+      },
+      onClick: () => toggleChildGeneric(data, save, s, c.id)
+    }, c.done ? "✓" : ""), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        ...S.childTitle,
+        ...(c.done ? S.taskDone : {})
+      }
+    }, c.title), c.date && /*#__PURE__*/React.createElement("div", {
+      style: S.subDateTag
+    }, fmtShort(c.date))), /*#__PURE__*/React.createElement("button", {
+      style: S.removeBtn,
+      onClick: () => removeChildGeneric(data, save, s, c.id)
+    }, "×"))), /*#__PURE__*/React.createElement("div", {
+      style: S.subAddRow
+    }, /*#__PURE__*/React.createElement("input", {
+      style: S.subInput,
+      placeholder: "Tag-Aufgabe …",
+      value: childText[itemKey] || "",
+      onChange: e => setChildText({
+        ...childText,
+        [itemKey]: e.target.value
       })
-    }, void 0, false), fromAbove.length > 0 && /*#__PURE__*/_jsxDEV(_Fragment, {
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        style: S.sectionLabel,
-        children: "Aus Monats-/Jahreszielen"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        style: {
-          ...S.list,
-          marginBottom: 8
-        },
-        children: fromAbove.map(s => {
-          const itemKey = s.bucket + s.id;
-          const open = openId === itemKey;
-          const children = s.children || [];
-          return /*#__PURE__*/_jsxDEV("div", {
-            style: S.goalCard,
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              style: S.goalTaskRow,
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                style: {
-                  ...S.checkbox,
-                  ...(s.done ? S.checkboxDone : {})
-                },
-                onClick: () => toggleAbove(s),
-                children: s.done ? "✓" : ""
-              }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                style: {
-                  flex: 1
-                },
-                children: [/*#__PURE__*/_jsxDEV("div", {
-                  style: {
-                    ...S.taskTitle,
-                    ...(s.done ? S.taskDone : {})
-                  },
-                  children: s.title
-                }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                  style: S.goalTag,
-                  children: [s.sourceLabel, " · ", s.goalTitle, children.length > 0 ? ` · ${children.filter(c => c.done).length}/${children.length} Tage` : ""]
-                }, void 0, true)]
-              }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                style: S.expandBtnSmall,
-                onClick: () => setOpenId(open ? null : itemKey),
-                children: open ? "–" : "+"
-              }, void 0, false)]
-            }, void 0, true), open && /*#__PURE__*/_jsxDEV("div", {
-              style: S.childWrap,
-              children: [children.length === 0 && /*#__PURE__*/_jsxDEV("div", {
-                style: S.hintSmall,
-                children: "Noch nicht in Tage aufgeteilt."
-              }, void 0, false), children.map(c => /*#__PURE__*/_jsxDEV("div", {
-                style: S.childRow,
-                children: [/*#__PURE__*/_jsxDEV("button", {
-                  style: {
-                    ...S.checkboxTiny,
-                    ...(c.done ? S.checkboxDone : {})
-                  },
-                  onClick: () => toggleChildGeneric(data, save, s, c.id),
-                  children: c.done ? "✓" : ""
-                }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-                  style: {
-                    flex: 1
-                  },
-                  children: [/*#__PURE__*/_jsxDEV("div", {
-                    style: {
-                      ...S.childTitle,
-                      ...(c.done ? S.taskDone : {})
-                    },
-                    children: c.title
-                  }, void 0, false), c.date && /*#__PURE__*/_jsxDEV("div", {
-                    style: S.subDateTag,
-                    children: fmtShort(c.date)
-                  }, void 0, false)]
-                }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-                  style: S.removeBtn,
-                  onClick: () => removeChildGeneric(data, save, s, c.id),
-                  children: "×"
-                }, void 0, false)]
-              }, c.id, true)), /*#__PURE__*/_jsxDEV("div", {
-                style: S.subAddRow,
-                children: [/*#__PURE__*/_jsxDEV("input", {
-                  style: S.subInput,
-                  placeholder: "Tag-Aufgabe …",
-                  value: childText[itemKey] || "",
-                  onChange: e => setChildText({
-                    ...childText,
-                    [itemKey]: e.target.value
-                  })
-                }, void 0, false), /*#__PURE__*/_jsxDEV("input", {
-                  style: S.subDateInput,
-                  type: "date",
-                  value: childDate[itemKey] || "",
-                  onChange: e => setChildDate({
-                    ...childDate,
-                    [itemKey]: e.target.value
-                  })
-                }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                  style: S.subAddBtn,
-                  onClick: () => {
-                    const t = (childText[itemKey] || "").trim();
-                    if (!t) return;
-                    addChildGeneric(data, save, s, t, childDate[itemKey] || null);
-                    setChildText({
-                      ...childText,
-                      [itemKey]: ""
-                    });
-                    setChildDate({
-                      ...childDate,
-                      [itemKey]: ""
-                    });
-                  },
-                  children: "+"
-                }, void 0, false)]
-              }, void 0, true)]
-            }, void 0, true)]
-          }, itemKey, true);
-        })
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV(WeekGoalsSection, {
-      goals: week.goals,
-      onAddGoal: title => title.trim() && updateGoals([...week.goals, {
+    }), /*#__PURE__*/React.createElement("input", {
+      style: S.subDateInput,
+      type: "date",
+      value: childDate[itemKey] || "",
+      onChange: e => setChildDate({
+        ...childDate,
+        [itemKey]: e.target.value
+      })
+    }), /*#__PURE__*/React.createElement("button", {
+      style: S.subAddBtn,
+      onClick: () => {
+        const t = (childText[itemKey] || "").trim();
+        if (!t) return;
+        addChildGeneric(data, save, s, t, childDate[itemKey] || null);
+        setChildText({
+          ...childText,
+          [itemKey]: ""
+        });
+        setChildDate({
+          ...childDate,
+          [itemKey]: ""
+        });
+      }
+    }, "+"))));
+  }))), /*#__PURE__*/React.createElement(WeekGoalsSection, {
+    goals: week.goals,
+    onAddGoal: title => title.trim() && updateGoals([...week.goals, {
+      id: uid(),
+      title: title.trim(),
+      done: false,
+      subtasks: []
+    }]),
+    onToggleGoal: id => updateGoals(week.goals.map(g => g.id === id ? {
+      ...g,
+      done: !g.done
+    } : g)),
+    onRemoveGoal: id => updateGoals(week.goals.filter(g => g.id !== id)),
+    onAddSubtask: (goalId, title, date) => updateGoals(week.goals.map(g => g.id === goalId ? {
+      ...g,
+      subtasks: [...(g.subtasks || []), {
         id: uid(),
-        title: title.trim(),
+        title,
         done: false,
-        subtasks: []
-      }]),
-      onToggleGoal: id => updateGoals(week.goals.map(g => g.id === id ? {
-        ...g,
-        done: !g.done
-      } : g)),
-      onRemoveGoal: id => updateGoals(week.goals.filter(g => g.id !== id)),
-      onAddSubtask: (goalId, title, date) => updateGoals(week.goals.map(g => g.id === goalId ? {
-        ...g,
-        subtasks: [...(g.subtasks || []), {
-          id: uid(),
-          title,
-          done: false,
-          date
-        }]
-      } : g)),
-      onToggleSubtask: (goalId, subId) => updateGoals(week.goals.map(g => g.id === goalId ? {
-        ...g,
-        subtasks: g.subtasks.map(s => s.id === subId ? {
-          ...s,
-          done: !s.done
-        } : s)
-      } : g)),
-      onRemoveSubtask: (goalId, subId) => updateGoals(week.goals.map(g => g.id === goalId ? {
-        ...g,
-        subtasks: g.subtasks.filter(s => s.id !== subId)
-      } : g))
-    }, void 0, false)]
-  }, void 0, true);
+        date
+      }]
+    } : g)),
+    onToggleSubtask: (goalId, subId) => updateGoals(week.goals.map(g => g.id === goalId ? {
+      ...g,
+      subtasks: g.subtasks.map(s => s.id === subId ? {
+        ...s,
+        done: !s.done
+      } : s)
+    } : g)),
+    onRemoveSubtask: (goalId, subId) => updateGoals(week.goals.map(g => g.id === goalId ? {
+      ...g,
+      subtasks: g.subtasks.filter(s => s.id !== subId)
+    } : g))
+  }));
 }
 
 // ---------- Shared logic for Month / Year advanced goal sections ----------
@@ -1674,41 +1642,38 @@ function MonthView({
   for (let i = 0; i < firstWeekday; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(cursor.getFullYear(), cursor.getMonth(), d));
   const goalProps = useAdvancedGoals(data, save, "months", mKey);
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.view,
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.calendarGrid,
-      children: [WEEKDAYS.map(w => /*#__PURE__*/_jsxDEV("div", {
-        style: S.calHeadCell,
-        children: w
-      }, w, false)), cells.map((d, i) => {
-        if (!d) return /*#__PURE__*/_jsxDEV("div", {
-          style: S.calCellEmpty
-        }, i, false);
-        const k = dateKey(d);
-        const items = data.days[k]?.items || [];
-        const isToday = dateKey(new Date()) === k;
-        return /*#__PURE__*/_jsxDEV("button", {
-          style: {
-            ...S.calCell,
-            ...(isToday ? S.calCellToday : {})
-          },
-          onClick: () => {
-            setCursor(d);
-            setTab("day");
-          },
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            children: d.getDate()
-          }, void 0, false), items.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-            style: S.calDot
-          }, void 0, false)]
-        }, i, true);
-      })]
-    }, void 0, true), /*#__PURE__*/_jsxDEV(AdvancedGoalsSection, {
-      label: "Monatsziele",
-      ...goalProps
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.view
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.calendarGrid
+  }, WEEKDAYS.map(w => /*#__PURE__*/React.createElement("div", {
+    key: w,
+    style: S.calHeadCell
+  }, w)), cells.map((d, i) => {
+    if (!d) return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: S.calCellEmpty
+    });
+    const k = dateKey(d);
+    const items = data.days[k]?.items || [];
+    const isToday = dateKey(new Date()) === k;
+    return /*#__PURE__*/React.createElement("button", {
+      key: i,
+      style: {
+        ...S.calCell,
+        ...(isToday ? S.calCellToday : {})
+      },
+      onClick: () => {
+        setCursor(d);
+        setTab("day");
+      }
+    }, /*#__PURE__*/React.createElement("span", null, d.getDate()), items.length > 0 && /*#__PURE__*/React.createElement("div", {
+      style: S.calDot
+    }));
+  })), /*#__PURE__*/React.createElement(AdvancedGoalsSection, {
+    label: "Monatsziele",
+    ...goalProps
+  }));
 }
 
 // ---------- Ziele (Year goals + Vision board combined behind a toggle) ----------
@@ -1746,69 +1711,55 @@ function ZieleView({
     });
     setEditingId(null);
   };
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.view,
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      style: S.sectionLabel,
-      children: "Monate"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      style: S.monthGrid,
-      children: months.map((m, i) => /*#__PURE__*/_jsxDEV("button", {
-        style: S.monthCell,
-        onClick: () => {
-          setCursor(m);
-          setTab("month");
-        },
-        children: MONTHS[i].slice(0, 3)
-      }, i, false))
-    }, void 0, false), goalProps.goals.length > 0 && /*#__PURE__*/_jsxDEV(_Fragment, {
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        style: S.sectionLabel,
-        children: ["Leitsätze ", cursor.getFullYear()]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        style: {
-          ...S.list,
-          marginBottom: 22
-        },
-        children: goalProps.goals.map(g => /*#__PURE__*/_jsxDEV("div", {
-          style: S.leitsatzCard,
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            style: S.leitsatzGoal,
-            children: g.title
-          }, void 0, false), editingId === g.id ? /*#__PURE__*/_jsxDEV(_Fragment, {
-            children: [/*#__PURE__*/_jsxDEV("textarea", {
-              style: S.visionTextarea,
-              placeholder: "Ein Satz, ein Vers, ein Gedanke dazu …",
-              value: leitsatzDraft,
-              onChange: e => setLeitsatzDraft(e.target.value),
-              autoFocus: true
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              style: S.visionEditRow,
-              children: [/*#__PURE__*/_jsxDEV("button", {
-                style: S.scopeBtn,
-                onClick: () => setEditingId(null),
-                children: "Abbrechen"
-              }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-                style: {
-                  ...S.scopeBtn,
-                  ...S.scopeBtnActive
-                },
-                onClick: () => saveLeitsatz(g.id),
-                children: "Speichern"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true) : /*#__PURE__*/_jsxDEV("button", {
-            style: S.leitsatzText,
-            onClick: () => startEditLeitsatz(g),
-            children: g.leitsatz ? `„${g.leitsatz}“` : "+ Leitsatz hinzufügen"
-          }, void 0, false)]
-        }, g.id, true))
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV(AdvancedGoalsSection, {
-      label: "Jahresziele",
-      ...goalProps
-    }, void 0, false)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.view
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Monate"), /*#__PURE__*/React.createElement("div", {
+    style: S.monthGrid
+  }, months.map((m, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    style: S.monthCell,
+    onClick: () => {
+      setCursor(m);
+      setTab("month");
+    }
+  }, MONTHS[i].slice(0, 3)))), goalProps.goals.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: S.sectionLabel
+  }, "Leitsätze ", cursor.getFullYear()), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.list,
+      marginBottom: 22
+    }
+  }, goalProps.goals.map(g => /*#__PURE__*/React.createElement("div", {
+    key: g.id,
+    style: S.leitsatzCard
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.leitsatzGoal
+  }, g.title), editingId === g.id ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("textarea", {
+    style: S.visionTextarea,
+    placeholder: "Ein Satz, ein Vers, ein Gedanke dazu …",
+    value: leitsatzDraft,
+    onChange: e => setLeitsatzDraft(e.target.value),
+    autoFocus: true
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.visionEditRow
+  }, /*#__PURE__*/React.createElement("button", {
+    style: S.scopeBtn,
+    onClick: () => setEditingId(null)
+  }, "Abbrechen"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.scopeBtn,
+      ...S.scopeBtnActive
+    },
+    onClick: () => saveLeitsatz(g.id)
+  }, "Speichern"))) : /*#__PURE__*/React.createElement("button", {
+    style: S.leitsatzText,
+    onClick: () => startEditLeitsatz(g)
+  }, g.leitsatz ? `„${g.leitsatz}“` : "+ Leitsatz hinzufügen"))))), /*#__PURE__*/React.createElement(AdvancedGoalsSection, {
+    label: "Jahresziele",
+    ...goalProps
+  }));
 }
 
 // ---------- Tab Bar ----------
@@ -1829,28 +1780,26 @@ function TabBar({
     id: "goals",
     label: "Ziele"
   }];
-  return /*#__PURE__*/_jsxDEV("div", {
-    style: S.tabBar,
-    children: tabs.map(t => {
-      const active = tab === t.id;
-      return /*#__PURE__*/_jsxDEV("button", {
-        style: {
-          ...S.tabBtn,
-          ...(active ? S.tabBtnActive : {})
-        },
-        onClick: () => setTab(t.id),
-        children: [/*#__PURE__*/_jsxDEV("span", {
-          style: {
-            ...S.tabDot,
-            ...(active ? S.tabDotActive : {})
-          }
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          style: S.tabLabel,
-          children: t.label
-        }, void 0, false)]
-      }, t.id, true);
-    })
-  }, void 0, false);
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.tabBar
+  }, tabs.map(t => {
+    const active = tab === t.id;
+    return /*#__PURE__*/React.createElement("button", {
+      key: t.id,
+      style: {
+        ...S.tabBtn,
+        ...(active ? S.tabBtnActive : {})
+      },
+      onClick: () => setTab(t.id)
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        ...S.tabDot,
+        ...(active ? S.tabDotActive : {})
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      style: S.tabLabel
+    }, t.label));
+  }));
 }
 
 // ---------- Design tokens: clean white ----------
@@ -1897,7 +1846,7 @@ const S = {
     fontWeight: 600
   },
   topBar: {
-    padding: "20px 20px 14px",
+    padding: "calc(20px + env(safe-area-inset-top)) 20px 14px",
     borderBottom: `1px solid ${COLORS.border}`,
     background: COLORS.bg
   },
@@ -2163,6 +2112,31 @@ const S = {
     fontSize: 18,
     color: COLORS.textSoft,
     cursor: "pointer"
+  },
+  taskItemWrap: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  noteDot: {
+    display: "inline-block",
+    width: 5,
+    height: 5,
+    borderRadius: "50%",
+    background: COLORS.amber,
+    marginLeft: 6,
+    verticalAlign: "middle"
+  },
+  noteEditWrap: {
+    marginTop: 4,
+    marginLeft: 12,
+    marginRight: 0,
+    padding: 10,
+    borderRadius: 10,
+    border: `1px solid ${COLORS.border}`,
+    background: COLORS.card,
+    display: "flex",
+    flexDirection: "column",
+    gap: 6
   },
   focusThemeRow: {
     display: "flex",
